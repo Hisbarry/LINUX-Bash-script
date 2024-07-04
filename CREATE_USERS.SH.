@@ -1,44 +1,52 @@
 #!/bin/bash
 
-# Set the log file and password storage file
+# Set the log file and password file
 LOG_FILE=/var/log/user_management.log
 PASSWORD_FILE=/var/secure/user_passwords.txt
 
-# Function to create a user and set up their home directory
-create_user() {
-  local username=$1
-  local groups=(${2//,/ })
-  
+# Check if the input file is provided
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 <input_file>"
+  exit 1
+fi
+
+# Read the input file
+INPUT_FILE=$1
+
+# Create the log file and password file if they don't exist
+touch $LOG_FILE
+chmod 600 $LOG_FILE
+touch $PASSWORD_FILE
+chmod 600 $PASSWORD_FILE
+
+# Iterate over each line in the input file
+while IFS=';' read -r user groups; do
+  # Remove whitespace from the user and groups
+  user=$(echo "$user" | tr -d '[:space:]')
+  groups=$(echo "$groups" | tr -d '[:space:]')
+
   # Create the user's personal group
-  groupadd ${username} &>> ${LOG_FILE}
-  
-  # Create the user and add them to their personal group and other specified groups
-  useradd -m -g ${username} -G ${groups[*]} ${username} &>> ${LOG_FILE}
-  
-  # Set a random password for the user
-  password=$(pwgen -1)
-  echo "${username}:${password}" >> ${PASSWORD_FILE}
-  echo ${password} | passwd --stdin ${username} &>> ${LOG_FILE}
-  
-  # Set permissions and ownership for the user's home directory
-  chown ${username}:${username} /home/${username} &>> ${LOG_FILE}
-  chmod 700 /home/${username} &>> ${LOG_FILE}
-}
+  groupadd $user
 
-# Read the input file and create users
-while IFS=';' read -r username groups
-do
-  # Remove whitespace from the input
-  username=${username// /}
-  groups=${groups// /}
-  
-  # Check if the user already exists
-  if id -u ${username} &>/dev/null; then
-    echo "User ${username} already exists. Skipping..." &>> ${LOG_FILE}
-  else
-    create_user ${username} ${groups}
-    echo "User ${username} created successfully." &>> ${LOG_FILE}
-  fi
-done < "$1"
+  # Create the user and add them to their personal group
+  useradd -m -g $user -s /bin/bash $user
 
-exit 0
+  # Add the user to the specified groups
+  IFS=',' read -r -a group_array <<< "$groups"
+  for group in "${group_array[@]}"; do
+    groupadd $group
+    usermod -aG $group $user
+  done
+
+  # Generate a random password for the user
+  password=$(pwgen -s 12 1)
+
+  # Set the user's password
+  echo "$user:$password" | chpasswd
+
+  # Log the action
+  echo "Created user $user with password $password and added to groups ${group_array[*]}" >> $LOG_FILE
+
+  # Store the password securely
+  echo "$user,$password" >> $PASSWORD_FILE
+done < $INPUT_FILE
