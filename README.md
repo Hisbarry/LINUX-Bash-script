@@ -43,3 +43,25 @@ do
 done < "$1"
 
 exit 0
+
+DevOps Stage 1: Linux User Creation Bash Script
+==============================================
+
+This script, `create_users.sh`, is designed to create Linux users and groups based on a input file containing usernames and group names. The script reads the input file, creates the users and groups, sets up home directories with appropriate permissions and ownership, generates random passwords for the users, and logs all actions to `/var/log/user_management.log`. Additionally, it stores the generated passwords securely in `/var/secure/user_passwords.txt`.
+
+### How to use the script
+
+1. Create a text file containing the usernames and group names, where each line is formatted as `user;groups`.
+2. Run the script by supplying the name of the text file as the first argument, e.g. `bash create_users.sh input_file.txt`.
+
+### Technical Article
+
+As a SysOps engineer, I was tasked with creating a bash script to automate the process of creating Linux users and groups. This script is designed to be flexible and easy to use, with clear documentation and comments throughout.
+
+The script uses the `useradd` and `groupadd` commands to create the users and groups, and the `pwgen` command to generate random passwords. It also uses the `chpasswd` command to set the user's password, and the `usermod` command to add the user to the specified groups.
+
+One of the key features of this script is its ability to handle errors and exceptions. For example, if a user or group already exists, the script will skip over it and continue with the next line in the input file.
+
+I was inspired to write this script as part of the [HNG Internship program](https://hng.tech/internship), which provides opportunities for developers to gain practical experience in DevOps and other areas. I hope that this script will be useful to others, and that it will help to demonstrate the power and flexibility of bash scripting.
+
+For more information about the HNG Internship program, please visit [https://hng.tech/hire](https://hng.tech/hire) or [https://hng.tech/premium](https://hng.tech/premium).
