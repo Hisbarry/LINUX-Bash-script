@@ -1,5 +1,3 @@
-
-
 #!/bin/bash
 
 # Set the log file and password file
