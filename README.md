@@ -1,3 +1,5 @@
+HI I'M GODSFAVOUR AKWATA, a DevOps engineer in HNG_TECH. This is an the  article about a task I was given in HNG11 internship, it is about a Linux user creation Bash script and password generation and group of employees details. As a DevSecOps this is how I handle the task. 
+
 DevOps Stage 1: Linux User Creation Bash Script
 ==============================================
 
