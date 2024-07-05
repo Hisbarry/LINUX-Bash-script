@@ -1,3 +1,5 @@
+
+
 #!/bin/bash
 
 # Set the log file and password file
@@ -19,23 +21,46 @@ chmod 600 $LOG_FILE
 touch $PASSWORD_FILE
 chmod 600 $PASSWORD_FILE
 
+# Ensure the pwgen tool is installed
+if ! command -v pwgen &> /dev/null; then
+  echo "pwgen could not be found, please install it." | tee -a $LOG_FILE
+  exit 1
+fi
+
 # Iterate over each line in the input file
 while IFS=';' read -r user groups; do
   # Remove whitespace from the user and groups
   user=$(echo "$user" | tr -d '[:space:]')
   groups=$(echo "$groups" | tr -d '[:space:]')
 
-  # Create the user's personal group
-  groupadd $user
+  # Check if user already exists
+  if id "$user" &> /dev/null; then
+    echo "User $user already exists, skipping." | tee -a $LOG_FILE
+    continue
+  fi
+
+  # Create the user's personal group, handle if it exists
+  if ! groupadd $user; then
+    echo "Group $user already exists or failed to create." | tee -a $LOG_FILE
+  fi
 
   # Create the user and add them to their personal group
-  useradd -m -g $user -s /bin/bash $user
+  if ! useradd -m -g $user -s /bin/bash $user; then
+    echo "Failed to create user $user." | tee -a $LOG_FILE
+    continue
+  fi
 
   # Add the user to the specified groups
   IFS=',' read -r -a group_array <<< "$groups"
   for group in "${group_array[@]}"; do
-    groupadd $group
-    usermod -aG $group $user
+    if ! grep -q "^$group:" /etc/group; then
+      if ! groupadd $group; then
+        echo "Failed to create group $group for user $user." | tee -a $LOG_FILE
+      fi
+    fi
+    if ! usermod -aG $group $user; then
+      echo "Failed to add user $user to group $group." | tee -a $LOG_FILE
+    fi
   done
 
   # Generate a random password for the user
@@ -49,5 +74,8 @@ while IFS=';' read -r user groups; do
 
   # Store the password securely
   echo "$user,$password" >> $PASSWORD_FILE
+
 done < $INPUT_FILE
+
 echo "User creation process completed. Check $LOG_FILE for details."
+
