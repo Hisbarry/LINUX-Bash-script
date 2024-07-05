@@ -1,5 +1,6 @@
-HI I'M *GODSFAVOUR AKWATA*, a DevOps engineer in HNG_TECH. This is an the  article about a task I was given in HNG11 internship, it is about a Linux user creation Bash script. This Bash script, create_users.sh, is designed to automate the process of creating new users and groups on a Linux system based on the information provided in a text file. The script reads the file, creates the users and groups, sets up home directories with appropriate permissions and ownership, generates random passwords for the users, and logs all actions to a log file. Additionally, the generated passwords are stored securely in a separate file. 
-**As a DevSecOps this is how I handle the task.*
+***HI I'M *GODSFAVOUR AKWATA***, a DevOps engineer in HNG_TECH. This is an the  article about a task I was given in HNG11 internship, it is about a Linux user creation Bash script. This Bash script, create_users.sh, is designed to automate the process of creating new users and groups on a Linux system based on the information provided in a text file. The script reads the file, creates the users and groups, sets up home directories with appropriate permissions and ownership, generates random passwords for the users, and logs all actions to a log file. Additionally, the generated passwords are stored securely in a separate file. 
+
+***As a DevSecOps this is how I handle the task****
 
 DevOps Stage 1: Linux User Creation Bash Script
 ==============================================
