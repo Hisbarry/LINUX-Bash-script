@@ -12,13 +12,15 @@ href="about.html">About</a>: Linux Bash script
 <h1> HNG-INTERNSHIP</h1>
 <p>My work on Linux Bash script</p>
 
+   </head>
+   <body>
 
      
 **HI I'M *GODSFAVOUR AKWATA***, a DevOps engineer in HNG_TECH. This is an the  article about a task I was given in HNG11 internship, it is about a Linux user creation Bash script. This Bash script, create_users.sh, is designed to automate the process of creating new users and groups on a Linux system based on the information provided in a text file. The script reads the file, creates the users and groups, sets up home directories with appropriate permissions and ownership, generates random passwords for the users, and logs all actions to a log file. Additionally, the generated passwords are stored securely in a separate file. 
 
 <Header> As a DevSecOps this is how I handle the task 
   
-<Body>>
+<Body>
   
 DevOps Stage 1: Linux User Creation Bash Script
 ==============================================
@@ -85,3 +87,11 @@ In conclusion, the create_users.sh script is a powerful tool for automating Linu
 Learn More about HNG Internship Program
 
 The create_users.sh script was developed as part of the HNG Internship program, which provides opportunities for developers to gain practical experience in DevOps and other areas. If you're interested in learning more about the program, please visit https://hng.tech/hire or https://hng.tech/premium.
+
+           
+<h1>  
+&copy; AKWATA GODSFAVOUR 
+</h1>
+</body>
+</html>
+
