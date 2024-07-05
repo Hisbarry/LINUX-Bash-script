@@ -50,3 +50,4 @@ while IFS=';' read -r user groups; do
   # Store the password securely
   echo "$user,$password" >> $PASSWORD_FILE
 done < $INPUT_FILE
+echo "User creation process completed. Check $LOG_FILE for details."
